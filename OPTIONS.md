@@ -16,6 +16,7 @@ Complete reference for all available customization options.
 | `@mapledark-show-time` | string | `"1"` | Show time: "1" (yes) or "0" (no) |
 | `@mapledark-military-time` | string | `"true"` | 24-hour format: "true" or "false" |
 | `@mapledark-window-status-separator` | string | `""` | Separator between windows |
+| `@mapledark-window-rename-mode` | string | `"none"` | Window naming: "none", "automatic", or "manual" |
 
 ## Detailed Options
 
@@ -198,6 +199,42 @@ set -g @mapledark-military-time "true"
 - `"false"` - Use 12-hour format in clock mode
 
 **Note:** This affects tmux clock mode (`prefix + t`), not the status bar time display. Use `@mapledark-time-format` to control status bar time.
+
+---
+
+### Window Rename Mode
+
+Control how tmux names your windows - fixes the issue where windows show directory names instead of application names.
+
+```bash
+set -g @mapledark-window-rename-mode "none"
+```
+
+**Values:**
+- `"none"` (default) - **Show application/process name** - Disables automatic renaming so windows show the running application (vim, bash, htop, etc.)
+- `"automatic"` - Show directory name - Let tmux automatically rename windows based on current directory
+- `"manual"` - Manual names only - Respect only user-set window names, ignore automatic renaming
+
+**Problem this solves:**
+By default, some tmux setups show the current directory instead of the running application in window names. Setting this to `"none"` (default) ensures you see what program is running (e.g., "vim", "htop") rather than the directory path.
+
+**Examples:**
+
+```bash
+# Default - show application names (vim, bash, etc.)
+set -g @mapledark-window-rename-mode "none"
+# Window shows: "vim" when editing, "htop" when monitoring
+
+# Automatic - show directory names
+set -g @mapledark-window-rename-mode "automatic"
+# Window shows: "~" or "~/dev" or "project"
+
+# Manual - only use names you set with Ctrl+b ,
+set -g @mapledark-window-rename-mode "manual"
+# Window shows: whatever you name it manually
+```
+
+**Note:** This is related to tmux's `automatic-rename` and `allow-rename` options. The plugin sets these for you based on your preference.
 
 ---
 

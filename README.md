@@ -253,6 +253,26 @@ set -ag status-right "#[fg=#8fc7ff] #(battery_percentage) "
 
 ## Troubleshooting
 
+### Windows show directory names instead of application names
+
+**Problem:** Your windows display the current directory (e.g., "~/dev") instead of the running application (e.g., "vim")
+
+**Solution:** The plugin now defaults to showing application names. If you're still seeing directory names, you may have `automatic-rename` set elsewhere in your config. Add this to your `~/.tmux.conf`:
+
+```bash
+# Ensure application names are shown (this is the plugin default)
+set -g @mapledark-window-rename-mode "none"
+```
+
+Or if you prefer directory names:
+```bash
+set -g @mapledark-window-rename-mode "automatic"
+```
+
+See [OPTIONS.md](OPTIONS.md#window-rename-mode) for details.
+
+---
+
 ### Icons not displaying
 
 **Problem:** Icons show as boxes or question marks

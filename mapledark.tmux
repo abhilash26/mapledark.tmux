@@ -37,6 +37,13 @@ SHOW_HOST=$(get_tmux_option "@mapledark-show-host" "1")
 SHOW_TIME=$(get_tmux_option "@mapledark-show-time" "1")
 MILITARY_TIME=$(get_tmux_option "@mapledark-military-time" "true")
 WINDOW_STATUS_SEPARATOR=$(get_tmux_option "@mapledark-window-status-separator" "")
+WINDOW_WITH_ACTIVITY=$(get_tmux_option "@mapledark-window-with-activity" "true")
+
+# Window naming behavior
+# "automatic" - let tmux automatically rename windows (may show directory)
+# "manual" - respect user-set window names only
+# "none" - disable automatic renaming (keeps application name)
+WINDOW_RENAME_MODE=$(get_tmux_option "@mapledark-window-rename-mode" "none")
 
 # ============================================================================
 # Color Definitions (from colors.json)
@@ -125,6 +132,24 @@ if [ "$MILITARY_TIME" = "true" ]; then
     tmux set-option -g clock-mode-style 24
 else
     tmux set-option -g clock-mode-style 12
+fi
+
+# ============================================================================
+# Window Naming Behavior
+# ============================================================================
+# Control how tmux names windows
+if [ "$WINDOW_RENAME_MODE" = "automatic" ]; then
+    # Allow tmux to automatically rename windows (may show directory)
+    tmux set-option -g automatic-rename on
+    tmux set-option -g automatic-rename-format "#{b:pane_current_path}"
+elif [ "$WINDOW_RENAME_MODE" = "manual" ]; then
+    # Only use manually set window names
+    tmux set-option -g automatic-rename off
+    tmux set-option -g allow-rename off
+else
+    # Default: Show application/process name (disable automatic renaming)
+    tmux set-option -g automatic-rename off
+    tmux set-option -g allow-rename on
 fi
 
 # ============================================================================
